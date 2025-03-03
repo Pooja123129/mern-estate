@@ -14,3 +14,14 @@ catch(error){
     next(error);
 }
 };
+export const signin = async { req,res,next } => {
+   const { email,password } = req.body;
+   try{
+     const validuser = await user.findOne({ email : email });
+     if (!validuser) return next(errorhandler(404,'user not found'));
+     const validpassword = bcryptjs.compareSync(password,validuser.password);
+     if (!validpassword) return next(errorhandler(401,'wrong credentials!'));
+   }catch(error) {
+    next(error);
+} 
+}
